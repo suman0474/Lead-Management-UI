@@ -1,0 +1,277 @@
+/* Table body container */
+.scrollableContainer {
+  flex: 1;
+  overflow: visible;
+  position: relative;
+  background: #fff;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  display: block;
+  box-sizing: border-box;
+  border: none;
+}
+
+/* Hide scrollbar for all browsers */
+.scrollableContainer::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+  background: transparent;
+}
+
+/* Table container */
+.tableContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  contain: strict;
+  content-visibility: auto;
+  will-change: transform;
+  border: none;
+}
+
+/* Optimized table styles */
+.table {
+  width: 100%;
+  table-layout: fixed;
+  max-width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  /* Prevent sub-pixel rendering issues */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  /* Prevent text reflow */
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Fixed layout for header and body tables */
+.fixedTableLayout {
+  table-layout: fixed;
+  width: 100%;
+  margin: 10;
+  padding: 10;
+}
+
+/* Data table container */
+.dataTableContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  background: white;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+/* Full width table */
+.fullWidthTable {
+  width: 100%;
+}
+
+.tableContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+.tableHeaderContainer {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  overflow: hidden; /* Prevent horizontal scrollbar */
+}
+
+.table {
+  width: 100%;
+  min-width: var(--table-min-width, 100%);
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: fixed;
+}
+
+.tableHeader {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: var(--background);
+  width: 100%;
+  table-layout: fixed;
+}
+
+.tableCell {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 0.5rem 1rem;
+  max-width: 100%;
+  box-sizing: border-box;
+  word-break: break-word;
+  vertical-align: middle;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.tableHeaderCell {
+  position: relative;
+  min-width: 100px;
+  max-width: 500px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  background-color: var(--background, #fff);
+  box-sizing: border-box;
+  padding: 0.5rem 1rem;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: -webkit-grab;
+  cursor: grab;
+  -webkit-transition: background-color 0.2s, -webkit-transform 0.2s;
+  transition: background-color 0.2s, transform 0.2s;
+  position: relative;
+}
+
+/* Resize handle */
+.resizeHandle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 4px;
+  height: 100%;
+  background: transparent;
+  cursor: col-resize;
+  z-index: 1;
+  transition: background-color 0.2s;
+}
+
+.resizeHandle:hover,
+.resizeHandleActive {
+  background-color: #3b82f6;
+}
+
+/* Tooltip for truncated content */
+.tooltip {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.tooltip .tooltipText {
+  visibility: hidden;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 4px;
+  padding: 5px 10px;
+  position: absolute;
+  z-index: 1000;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  white-space: nowrap;
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tooltip:hover .tooltipText {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Truncated cell content */
+.truncatedCell {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  width: 100%;
+}
+
+.tableHeaderCell:hover {
+  background-color: #f5f5f5;
+}
+
+.tableHeaderCell:active {
+  cursor: -webkit-grabbing; /* Safari */
+  cursor: grabbing;
+}
+
+.draggingColumn {
+  opacity: 0.5;
+  background-color: #f0f0f0;
+  z-index: 1001;
+  position: relative;
+  -webkit-transform: translateZ(0); /* Force GPU acceleration */
+  transform: translateZ(0);
+}
+
+.dropTarget {
+  position: relative;
+}
+
+.dropTarget::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 2px;
+  background-color: #3b82f6;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.dropTarget:not(.draggingColumn)::after {
+  opacity: 1;
+}
+
+/* Visual feedback for drag over */
+.tableHeaderCell.dragOverLeft {
+  border-left: 2px solid #3b82f6;
+}
+
+.tableHeaderCell.dragOverRight {
+  border-right: 2px solid #3b82f6;
+}
+
+/* Hide the default drag image */
+.tableHeaderCell * {
+  pointer-events: none;
+}
+
+.resizer {
+  width: 1.5px;
+  height: 1.5rem;
+  background-color: #c1c1c1;
+  cursor: col-resize;
+  opacity: 0;
+  transition: opacity 0.2s, background-color 0.2s;
+}
+
+.resizer:hover,
+.resizerActive {
+  background-color: #3b82f6;
+  opacity: 1;
+}

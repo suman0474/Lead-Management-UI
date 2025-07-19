@@ -1,0 +1,164 @@
+import React from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { X, Phone, Mail, Linkedin, Globe } from 'lucide-react';
+
+export interface Lead {
+  leadId: string;
+  name: string;
+  designation?: string;
+  website?: string;
+  leadLink?: string;
+  occupation?: string;
+  companyHeadcount?: string;
+  state?: string;
+  sentDate: string;
+  sentBy: string;
+  email?: string;
+  mobileNumber?: string;
+  comments?: string;
+  linkedinAccountName?: string;
+}
+
+interface LeadDetailsPanelProps {
+  lead: Lead;
+  onClose: () => void;
+}
+
+const LeadDetailsPanel: React.FC<LeadDetailsPanelProps> = ({ lead, onClose }) => {
+  // Default email and phone number
+  const defaultEmail = 'ensarsales@gmail.com';
+  const defaultPhoneNumber = '9849638167';
+
+  // LinkedIn Handler
+  const handleLinkedIn = () => {
+    if (lead.linkedinAccountName) {
+      window.open(`https://www.linkedin.com/in/${lead.linkedinAccountName}`, '_blank');
+    } else {
+      window.open(`https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent(lead.name)}`, '_blank');
+    }
+  };
+
+  // Email Handler
+  const handleEmail = () => {
+    const emailToUse = lead.email || defaultEmail;
+    window.open(`mailto:${emailToUse}`, '_blank');
+  };
+
+  // Phone Handler
+  const handleCall = () => {
+    const phoneToUse = lead.mobileNumber || defaultPhoneNumber;
+    window.open(`tel:${phoneToUse}`, '_blank');
+  };
+
+  // Website Handler
+  const handleWebsite = () => {
+    if (lead.website) {
+      window.open(lead.website.startsWith('http') ? lead.website : `https://${lead.website}`, '_blank');
+    }
+  };
+
+  return (
+    <div className="fixed inset-y-0 right-0 w-96 bg-white border-l border-gray-200 shadow-lg z-40 flex flex-col h-screen">
+      {/* Header with close button */}
+      <div className="p-4 border-b relative">
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-semibold text-gray-900">Lead Details</h2>
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={onClose}
+            className="h-8 w-8 rounded-full hover:bg-gray-100 -mr-2"
+            aria-label="Close panel"
+          >
+            <X className="h-4 w-4 text-gray-500" />
+          </Button>
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="flex-1 p-4 space-y-4 overflow-y-auto">
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-center">Lead Information</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2 text-sm text-black">
+            <div><strong>Name:</strong> {lead.name}</div>
+            {lead.designation && <div><strong>Designation:</strong> {lead.designation}</div>}
+            {lead.occupation && <div><strong>Occupation:</strong> {lead.occupation}</div>}
+            {lead.state && <div><strong>State:</strong> {lead.state}</div>}
+            <div><strong>Sent Date:</strong> {new Date(lead.sentDate).toLocaleDateString()}</div>
+            <div><strong>Sent By:</strong> {lead.sentBy}</div>
+            {lead.companyHeadcount && <div><strong>Company Size:</strong> {lead.companyHeadcount}</div>}
+            {lead.email && <div><strong>Email:</strong> {lead.email}</div>}
+            {lead.mobileNumber && <div><strong>Phone:</strong> {lead.mobileNumber}</div>}
+            {lead.website && (
+              <div className="break-words">
+                <strong>Website:</strong>{' '}
+                <a href={lead.website} target="_blank" rel="noopener noreferrer" className="text-blue-600">
+                  {lead.website}
+                </a>
+              </div>
+            )}
+            {lead.leadLink && (
+              <div className="break-words">
+                <strong>Lead Link:</strong>{' '}
+                <a href={lead.leadLink} target="_blank" rel="noopener noreferrer" className="text-blue-600">
+                  {lead.leadLink}
+                </a>
+              </div>
+            )}
+            {lead.comments && <div><strong>Comments:</strong> {lead.comments}</div>}
+            {lead.linkedinAccountName && <div><strong>LinkedIn Username:</strong> {lead.linkedinAccountName}</div>}
+          </CardContent>
+        </Card>
+
+        {/* Contact Options */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Contact Options</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 gap-3">
+              <Button 
+                className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-medium" 
+                onClick={handleLinkedIn}
+              >
+                <Linkedin className="h-4 w-4 mr-2" />
+                LinkedIn
+              </Button>
+
+              <Button 
+                className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-medium" 
+                onClick={handleEmail}
+              >
+                <Mail className="h-4 w-4 mr-2" />
+                Email
+              </Button>
+
+              <Button 
+                className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-medium" 
+                onClick={handleCall}
+              >
+                <Phone className="h-4 w-4 mr-2" />
+                Call
+              </Button>
+
+              {lead.website && (
+                <Button 
+                  className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-medium" 
+                  onClick={handleWebsite}
+                >
+                  <Globe className="h-4 w-4 mr-2" />
+                  Visit Website
+                </Button>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+};
+
+export default LeadDetailsPanel;
